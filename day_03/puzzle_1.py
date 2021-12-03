@@ -24,7 +24,7 @@ with open("input.txt", "r") as file:
             epsilon_rate = epsilon_rate + "1"
         elif bit_counter_zero[bit_index] < bit_counter_one[bit_index]:
             gamma_rate = gamma_rate + "1"
-            epsilon_rate = epsilon_rate + "0"            
+            epsilon_rate = epsilon_rate + "0"
 
 gamma_rate_decimal = int(gamma_rate, 2)
 epsilon_rate_decimal = int(epsilon_rate, 2)

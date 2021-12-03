@@ -4,6 +4,7 @@ index3 = 2
 prev_sum = None
 larger = 0
 
+# result of test_input.txt file have to be 5
 with open("input.txt", "r") as file:
     lines_list = file.read().splitlines()
     while True:

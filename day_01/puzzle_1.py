@@ -1,5 +1,7 @@
 prev_deep = None
 larger = 0
+
+# result of test_input.txt file have to be 7
 with open("input.txt", "r") as file:
     for line in file.readlines():
         try:

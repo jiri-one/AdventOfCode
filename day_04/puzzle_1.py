@@ -2,7 +2,8 @@ import numpy as np
 
 arrays_list = []
 
-with open("test_input.txt", "r") as file:
+# result of test_input.txt file have to be 4512
+with open("input.txt", "r") as file:
 	lines_list = file.read().splitlines()
 	numbers = lines_list.pop(0).split(",")
 	array_in_list = []
@@ -18,12 +19,43 @@ with open("test_input.txt", "r") as file:
 					arrays_list.append(array)
 					array_in_list = []
 
-def is_there_a_winner(arrays):
-	for array_nr, array in enumerate(arrays):
-		print(array_nr)
-		for row in array:
-			print("řádek", row)
-		for row in array.T:
-			print("sloupec", row)		
-	
-is_there_a_winner(arrays_list)
+def is_there_a_winner():
+	for array_nr, array in enumerate(arrays_list):
+		# firstly check for winner row
+		for row_nr, row in enumerate(array):
+			true_elements = []
+			for element in row:
+				if element[1] == True:
+					true_elements.append(True)
+			if len(true_elements) == 5:
+				return array_nr
+		# then check for winner column
+		for column_nr, column in enumerate(array.T):
+			true_elements = []
+			for element in column:
+				if element[1] == True:
+					true_elements.append(True)
+			if len(true_elements) == 5:
+				return array_nr
+
+def mark_numbers_as_true_in_arrays():
+	for number in numbers:
+		for array_nr, array in enumerate(arrays_list):
+			for row_nr, row in enumerate(array):
+				for element_nr, element in enumerate(row):
+					if element[0] == int(number):
+						arrays_list[array_nr][row_nr][element_nr][1] = True
+			result = is_there_a_winner()
+			if result is not None:
+				return result, int(number)
+
+						
+winner_is_array_nr, win_number = mark_numbers_as_true_in_arrays()
+
+elements_sum = 0
+for row in arrays_list[winner_is_array_nr]:
+	for element in row:
+		if element[1] == False:
+			elements_sum += element[0]
+
+print(elements_sum*win_number)

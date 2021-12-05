@@ -58,4 +58,4 @@ for row in arrays_list[winner_is_array_nr]:
 		if element[1] == False:
 			elements_sum += element[0]
 
-print(elements_sum*win_number)
+print(elements_sum * win_number)

@@ -2,12 +2,11 @@ import numpy as np
 
 arrays_list = []
 
-# result of test_input.txt file have to be 1924
+# result of test_input.txt file have to be 1924 and for input.txt it is 8112
 with open("input.txt", "r") as file:
     lines_list = file.read().splitlines()
     numbers = lines_list.pop(0).split(",")
     array_in_list = []
-
     while lines_list:
         for line in list(lines_list):
             lines_list.pop(0)
@@ -19,45 +18,49 @@ with open("input.txt", "r") as file:
                     arrays_list.append(array)
                     array_in_list = []
 
-def is_there_a_winner():
-    for array_nr, array in enumerate(arrays_list):
-        # firstly check for winner row
-        for row_nr, row in enumerate(array):
-            true_elements = []
-            for element in row:
-                if element[1] == True:
-                    true_elements.append(True)
-            if len(true_elements) == 5:
-                return array_nr
-        # then check for winner column
-        for column_nr, column in enumerate(array.T):
-            true_elements = []
-            for element in column:
-                if element[1] == True:
-                    true_elements.append(True)
-            if len(true_elements) == 5:
-                return array_nr
+def is_this_array_a_winner(array):
+    # firstly check for winner row
+    for row_nr, row in enumerate(array):
+        true_elements = []
+        for element in row:
+            if element[1] == True:
+                true_elements.append(True)
+        if len(true_elements) == 5:
+            return True
+    # then check for winner column
+    for column_nr, column in enumerate(array.T):
+        true_elements = []
+        for element in column:
+            if element[1] == True:
+                true_elements.append(True)
+        if len(true_elements) == 5:
+            return True
 
-def mark_numbers_as_true_in_arrays():
-    for number in numbers:
-        for array_nr, array in enumerate(arrays_list):
+def mark_numbers_as_true_in_arrays(nums, arrays):
+    win_arrays = []
+    win_number = None
+    while nums:
+        if win_arrays:
+            if len(arrays) > 1:
+                for array_to_delete in sorted(win_arrays, reverse=True):
+                    arrays.pop(array_to_delete)
+                win_arrays = []
+            else:
+                return arrays[0], win_number
+        number = nums.pop(0)
+        for array_nr, array in enumerate(arrays):
             for row_nr, row in enumerate(array):
                 for element_nr, element in enumerate(row):
                     if element[0] == int(number):
-                        arrays_list[array_nr][row_nr][element_nr][1] = True
-            result = is_there_a_winner()
-            if result is not None:
-                return result, int(number)
+                        arrays[array_nr][row_nr][element_nr][1] = True
+            if is_this_array_a_winner(array) == True:
+                win_arrays.append(array_nr)
+                win_number = int(number)
 
-while len(arrays_list) > 1:
-    print(len(arrays_list))
-    winner_is_array_nr, win_number = mark_numbers_as_true_in_arrays()
-    removed_array = arrays_list.pop(winner_is_array_nr)
-
-winner_is_array_nr, win_number = mark_numbers_as_true_in_arrays()
+this_array_is_last_winner, win_number = mark_numbers_as_true_in_arrays(numbers, arrays_list)
 
 elements_sum = 0
-for row in arrays_list[0]:
+for row in this_array_is_last_winner:
     for element in row:
         if element[1] == False:
             elements_sum += element[0]

@@ -4,7 +4,7 @@ import numpy as np
 with open("input.txt", "r") as file:
     lines_list = file.read().splitlines()
 
-# determine size of grid and get list of coorginates
+# determine size of grid and get list of coordinates
 coordinates = []
 highest_x = 0
 highest_y = 0

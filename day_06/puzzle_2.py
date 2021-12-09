@@ -1,13 +1,13 @@
 import numpy as np
 
-# result of test_input.txt file have to be 5934 and for input.txt it is 380612
-with open("input.txt", "r") as file:
+# result of test_input.txt file have to be 26984457539 and for input.txt it is XXX
+with open("test_input.txt", "r") as file:
     lines_list = file.read().splitlines()
 
 lanternfish_list = lines_list[0].split(",")
 lanternfish_array = np.array(lanternfish_list, dtype=int)
 
-for day in range(80):
+for day in range(256):
     lanternfish_array = lanternfish_array - 1
     minus_one_indexes = np.where(lanternfish_array==-1)
     if np.size(minus_one_indexes):

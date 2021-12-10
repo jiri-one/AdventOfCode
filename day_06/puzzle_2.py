@@ -5,14 +5,13 @@ with open("test_input.txt", "r") as file:
     lines_list = file.read().splitlines()
 
 lanternfish_list = lines_list[0].split(",")
-lanternfish_array = np.array(lanternfish_list, dtype=int)
+lanternfish_array = np.array(lanternfish_list, dtype=np.int8)
 
 for day in range(256):
-    lanternfish_array = lanternfish_array - 1
-    minus_one_indexes = np.where(lanternfish_array==-1)
-    if np.size(minus_one_indexes):
-        for minus_one_index in np.nditer(minus_one_indexes):
-            lanternfish_array[minus_one_index] = 6
-            lanternfish_array = np.append(lanternfish_array, 8)
+    lanternfish_array = lanternfish_array - np.int8(1)
+    how_many_minus_one = np.size(lanternfish_array[lanternfish_array == np.int8(-1)])
+    if how_many_minus_one:
+        lanternfish_array[lanternfish_array == np.int8(-1)] = np.int8(6)
+        lanternfish_array = np.append(lanternfish_array, [np.int8(8) for _ in range(how_many_minus_one)])
 
 print(lanternfish_array.size)

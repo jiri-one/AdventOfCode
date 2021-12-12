@@ -10,7 +10,7 @@ lanternfish_array = np.zeros(9, dtype=int)
 
 number_of_days = 256
 
-# create initial list
+# count initial values
 for item in lanternfish_list:
     lanternfish_array[item] += 1
 

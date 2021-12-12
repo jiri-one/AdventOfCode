@@ -1,36 +1,24 @@
-# result of test_input.txt file have to be 26984457539 and for input.txt it is XXX
-with open("test_input.txt", "r") as file:
+import numpy as np
+
+# result of test_input.txt file have to be 26984457539 and for input.txt it is 1710166656900
+with open("input.txt", "r") as file:
     lines_list = file.read().splitlines()
 
 lanternfish_list = [int(item) for item in lines_list[0].split(",")]
 
-total_days = 256
+lanternfish_array = np.zeros(9, dtype=int)
 
-class Counter(object):
-    def __init__(self):
-        self.counter = 0
-    
-    def __call__(self):
-        self.counter += 1
+number_of_days = 256
 
-counter = Counter()
+# create initial list
+for item in lanternfish_list:
+    lanternfish_array[item] += 1
 
-def finish_fish(fish, start_day):
-    counter()
-    for day in range(start_day,total_days+1):
-        fish -= 1
-        if fish == -1:
-            finish_fish(8, day+1)
-            fish = 6
+for _ in range(number_of_days):
+    zeroes = lanternfish_array[0]
+    for index in range(8):
+        lanternfish_array[index] = lanternfish_array[index+1]
+    lanternfish_array[6] += zeroes
+    lanternfish_array[8] = zeroes
 
-for lanternfish in set(lanternfish_list):
-    number_of_repeated = lanternfish_list.count(lanternfish)
-    if number_of_repeated > 1:
-        counter_start_value = counter.counter
-        finish_fish(lanternfish, 1)
-        counter_end_value = counter.counter
-        counter.counter += (number_of_repeated - 1) * (counter_end_value - counter_start_value)
-    else: # number_of_repeated > 1:
-        finish_fish(lanternfish, 1)
-          
-print(counter.counter)
+print(np.sum(lanternfish_array))

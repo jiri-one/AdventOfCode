@@ -1,6 +1,6 @@
 import numpy as np
 
-# result of test_input.txt file have to be 168 and for input.txt it is XXX
+# result of test_input.txt file have to be 168 and for input.txt it is 87640209
 with open("input.txt", "r") as file:
 	lines_list = file.read().splitlines()
 
@@ -19,6 +19,5 @@ for crab_position in range(crabs[-1]+1):
 			least_fuel = possibly_least_fuel
 		elif possibly_least_fuel < least_fuel:
 			least_fuel = possibly_least_fuel
-			best_position = crab_position
 
 print(least_fuel)

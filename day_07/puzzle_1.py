@@ -19,6 +19,5 @@ for crab_position in range(crabs[-1]+1):
 			least_fuel = possibly_least_fuel
 		elif possibly_least_fuel < least_fuel:
 			least_fuel = possibly_least_fuel
-			best_position = crab_position
 
 print(least_fuel)

@@ -55,7 +55,7 @@ class SignalDecoder:
 				result = [char for char in signal if char not in self.four+self.segments[1]]
 				if result and len(result) == 1:
 					return result[0]
-	
+
 	def segment_five(self):
 		# we know segment seven and one and number four, and the last letter will give as nine
 		for signal in self.signals:
@@ -63,7 +63,7 @@ class SignalDecoder:
 				result = [char for char in signal if char not in self.four+self.segments[1]+self.segments[7]]
 				if result and len(result) == 1:
 					return result[0]
-	
+
 	def segment_two(self):
 		# we know number seven and segments 5 and 7, and the last letter will give as zero
 		for signal in self.signals:
@@ -71,7 +71,7 @@ class SignalDecoder:
 				result = [char for char in signal if char not in self.seven+self.segments[5]+self.segments[7]]
 				if result and len(result) == 1:
 					return result[0]
-	
+
 	def segment_four(self):
 		# we know number one and segments 1 and 7, and the last letter will give as three
 		for signal in self.signals:
@@ -79,7 +79,7 @@ class SignalDecoder:
 				result = [char for char in signal if char not in self.one+self.segments[1]+self.segments[7]]
 				if result and len(result) == 1:
 					return result[0]
-	
+
 	def segment_three(self):
 		# we know segments 1,4,5 and 7, and the last letter will give as two
 		for signal in self.signals:
@@ -87,7 +87,7 @@ class SignalDecoder:
 				result = [char for char in signal if char not in self.segments[1]+self.segments[4]+self.segments[5]+self.segments[7]]
 				if result and len(result) == 1:
 					return result[0]
-	
+
 	def rest_signals(self):
 		self.zero = "".join(sorted(list(itemgetter(1, 2, 3, 5, 6, 7)(self.segments))))
 		self.two = "".join(sorted(list(itemgetter(1, 3, 4, 5, 7)(self.segments))))
@@ -95,7 +95,7 @@ class SignalDecoder:
 		self.five = "".join(sorted(list(itemgetter(1, 2, 4, 6, 7)(self.segments))))
 		self.six = "".join(sorted(list(itemgetter(1, 2, 4, 5, 6, 7)(self.segments))))
 		self.nine = "".join(sorted(list(itemgetter(1, 2, 3, 4, 6, 7)(self.segments))))
-		
+
 def count_one_line(line):
 	sd = SignalDecoder(line.split(" | ")[0])
 	digits = line.split(" | ")[1]

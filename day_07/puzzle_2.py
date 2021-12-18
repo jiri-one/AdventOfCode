@@ -1,6 +1,6 @@
 import numpy as np
 
-# result of test_input.txt file have to be 37 and for input.txt it is 323647
+# result of test_input.txt file have to be 168 and for input.txt it is XXX
 with open("input.txt", "r") as file:
 	lines_list = file.read().splitlines()
 
@@ -12,7 +12,7 @@ least_fuel = None
 for crab_position in range(crabs[-1]+1):
 	possibly_least_fuel = 0
 	for crab in crabs:
-		fuel = abs(crab_position - crab)
+		fuel = sum(range(1,abs(crab_position - crab)+1))
 		possibly_least_fuel += fuel
 	else:
 		if least_fuel == None:

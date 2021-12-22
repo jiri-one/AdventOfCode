@@ -24,8 +24,7 @@ for row_nr, row in enumerate(arr):
 		elif elm_nr == len(row)-1:
 			neighbors_values = np.append(neighbors_values, row[elm_nr-1])
 		else: 
-			neighbors_values = np.append(neighbors_values, row[elm_nr-1])
-			neighbors_values = np.append(neighbors_values, row[elm_nr+1])
+			neighbors_values = np.append(neighbors_values, [row[elm_nr-1], row[elm_nr+1]])
 		
 		for row_index in row_neighbors:
 			neighbors_values = np.append(neighbors_values, arr[row_index][elm_nr])

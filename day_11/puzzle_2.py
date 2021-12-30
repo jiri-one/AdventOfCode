@@ -1,6 +1,6 @@
 import numpy as np
 
-# result of test_input.txt file have to be 195 and for input.txt it is XXX
+# result of test_input.txt file have to be 195 and for input.txt it is 324
 with open("input.txt", "r") as file:
     while line:=file.readline().strip():
         try:

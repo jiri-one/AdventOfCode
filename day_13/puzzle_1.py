@@ -43,7 +43,7 @@ else:
     split = np.hsplit
     flip = np.fliplr
 array = np.delete(array, value, cut_axis) # delete folded row/column
-# this will split arrays to 3 sliced arrays: 0:value, value:value (empty array), value:-1
+# this will split arrays to 3 sliced arrays: :value, value:value (empty array), value:
 arrays = split(array, np.array([value, value]))
 # remove empty array
 array1, array2 = [array for array in arrays if np.size(array) != 0]

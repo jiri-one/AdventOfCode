@@ -34,7 +34,7 @@ array = np.full((highest_y+1, highest_x+1), ".", dtype=str)
 for sharp in sharps:
     array[sharp[1]][sharp[0]] = "#"
 
-for x in range(1, len(fold)+1):
+for x in range(1, len(fold)+1): # handle all folds
     axis, value = fold[x]
     if axis == "y":
         cut_axis = 0

@@ -6,6 +6,7 @@ test_input = Path(__file__).parent / "test_input.txt"
 fold = {}
 highest_x = 0
 highest_y = 0
+sharps = []
 with open(test_input, "r") as file:
     fold_counter = 1
     for line in file:
@@ -18,8 +19,11 @@ with open(test_input, "r") as file:
             else:
                 x, y = line.split(",")
                 x, y = int(x), int(y)
+                sharps.append((x, y))
                 if x > highest_x: highest_x = x
                 if y > highest_y: highest_y = y
 
-array = np.ones((highest_y+1,highest_x+1), dtype=int)
+array = np.full((highest_y+1,highest_x+1), ".", dtype=str)
+for sharp in sharps:
+    array[sharp[1]][sharp[0]] = "X"
 print(array)

@@ -49,7 +49,7 @@ for _ in range(10):
         if rules[key]["count"] != 0:
             next_key1 = key[0] + rules[key]["added_char"] # first letter in key+added_char
             next_key2 = rules[key]["added_char"] + key[1] # added_char + second letter in key
-            # it's import here to use += because we need to do it more time
+            # it's import here to use += because we need to do it more times if one for cycle
             next_rules[next_key1]["count"] += rules[key]["count"]
             next_rules[next_key2]["count"] += rules[key]["count"]
             letter_counter(rules[key]["added_char"], rules[key]["count"])

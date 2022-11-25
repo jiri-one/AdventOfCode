@@ -2,7 +2,7 @@ from pathlib import Path
 import copy
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt" # result of this file is 2843834241366
 test_input = Path(__file__).parent / "test_input.txt" # result of this file is 2188189693529
 
 # helper variables
@@ -49,7 +49,7 @@ for _ in range(40):
         if rules[key]["count"] != 0:
             next_key1 = key[0] + rules[key]["added_char"] # first letter in key+added_char
             next_key2 = rules[key]["added_char"] + key[1] # added_char + second letter in key
-            # it's import here to use += because we need to do it more time
+            # it's import here to use += because we need to do it more times if one for cycle
             next_rules[next_key1]["count"] += rules[key]["count"]
             next_rules[next_key2]["count"] += rules[key]["count"]
             letter_counter(rules[key]["added_char"], rules[key]["count"])

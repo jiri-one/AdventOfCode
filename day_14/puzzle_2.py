@@ -2,8 +2,8 @@ from pathlib import Path
 import copy
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 2621
-test_input = Path(__file__).parent / "test_input.txt" # result of this file is 1588
+main_input = Path(__file__).parent / "input.txt" # result of this file is XXX
+test_input = Path(__file__).parent / "test_input.txt" # result of this file is 2188189693529
 
 # helper variables
 null_count_rules: dict[str, dict[str, str | int]] = {}
@@ -43,7 +43,7 @@ while True:
     start += 1
     end += 1
 
-for _ in range(10):
+for _ in range(40):
     next_rules = copy.deepcopy(null_count_rules)
     for key in rules:
         if rules[key]["count"] != 0:

@@ -9,9 +9,9 @@ test_input = Path(__file__).parent / "test_input.txt" # result of this file is 1
 # 3 for Scissors, C, Z
 
 # helper variables
-points:dict[str, int] = {"A": 1, "B": 2, "C": 3}
-convetrt_me_to_elf = {"X": "A", "Y": "B", "Z": "C"}
-total_score = 0
+points: dict[str, int] = {"A": 1, "B": 2, "C": 3}
+convetrt_me_to_elf: dict[str, str] = {"X": "A", "Y": "B", "Z": "C"}
+total_score: int = 0
 
 # helper functions
 def choose_winner_and_my_score(elf, me):

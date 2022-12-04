@@ -3,8 +3,8 @@ from pathlib import Path
 import copy
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 441
-test_input = Path(__file__).parent / "test_input.txt" # result of this file is 40
+main_input = Path(__file__).parent / "input.txt" # result of this file is 2849
+test_input = Path(__file__).parent / "test_input.txt" # result of this file is 315
 
 # read the initial file
 with open(main_input, "r") as file:
@@ -13,13 +13,8 @@ with open(main_input, "r") as file:
         if line:
             try:
                 arr_risk = np.vstack((arr_risk, np.array([int(x) for x in line], dtype=int)))
-                arr_check = np.vstack((arr_check, np.array([True for x in line], dtype=bool)))
-                arr_way = np.vstack((arr_way, np.array([0 for x in line], dtype=int)))
-                
             except NameError:
                 arr_risk = np.array([int(x) for x in line], dtype=int)
-                arr_check = np.array([True for x in line], dtype=bool)
-                arr_way = np.array([0 for x in line], dtype=int)
 
 # smaller array 4x4 for test purposes
 # with open(test_input, "r") as file:
@@ -29,15 +24,35 @@ with open(main_input, "r") as file:
 #         if line:
 #             try:
 #                 arr_risk = np.vstack((arr_risk, np.array([int(x) for x in line][:4], dtype=int)))
-#                 arr_check = np.vstack((arr_check, np.array([True for x in line][:4], dtype=bool)))
-#                 arr_way = np.vstack((arr_way, np.array([0 for x in line][:4], dtype=int)))
 #             except NameError:
 #                 arr_risk = np.array([int(x) for x in line][:4], dtype=int)
-#                 arr_check = np.array([True for x in line][:4], dtype=bool)
-#                 arr_way = np.array([0 for x in line][:4], dtype=int)
 #         counter -= 1
 #         if counter < 1:
 #             break
+
+def increase_arr(index, arr):
+    increased_arr = np.copy(arr)
+    for _ in range(index):
+        increased_arr = increased_arr + 1
+        ten_indexes = np.where(increased_arr.T==10)
+        if np.size(ten_indexes) > 0:
+            for ten_index in np.nditer(ten_indexes):
+                increased_arr.T[ten_index] = 1
+    return increased_arr
+    
+# create big array
+risk_arr_big_column = np.copy(arr_risk)
+for index in range(1,5):
+    risk_arr_big_column = np.concatenate((risk_arr_big_column, increase_arr(index, arr_risk)), axis=0)
+
+risk_arr_big = np.copy(risk_arr_big_column)
+for index in range(1,5):
+    risk_arr_big = np.concatenate((risk_arr_big, increase_arr(index, risk_arr_big_column)), axis=1)
+
+arr_risk = risk_arr_big
+arr_check = np.ones(np.shape(arr_risk), dtype=bool)
+arr_way = np.zeros(np.shape(arr_risk), dtype=int)
+
 
 # helper functions
 def mark_surrounding_to_check(x, y, lowest_risk, better_way):

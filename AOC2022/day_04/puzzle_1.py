@@ -4,8 +4,6 @@ from pathlib import Path
 main_input = Path(__file__).parent / "input.txt" # result of this file is 562
 test_input = Path(__file__).parent / "test_input.txt" # result of this file is 2
 
-# helper functions
-
 # helper variables
 overlaps: int = 0
 
@@ -23,6 +21,6 @@ with open(main_input, "r") as file:
                 overlaps += 1
             elif elf2_start in elf1_range and elf2_end in elf1_range:
                 overlaps += 1
-            
+
 
 print(overlaps)

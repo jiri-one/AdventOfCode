@@ -1,13 +1,14 @@
 from pathlib import Path
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt" # result of this file is 1232307
 test_input = Path(__file__).parent / "test_input.txt" # result of this file is 95437
 
+# helper variables
 folders: dict[Path, int] = {}
 root: Path = Path("/")
 
-# helper variables
+# helper functions
 def update_parents(dir, size):
     for parent in dir.parents:
         folders[parent] += size
@@ -27,9 +28,9 @@ with open(main_input, "r") as file:
                 dir = dir / line[5:]
                 folders[dir] = 0
         elif line == "$ ls":
-            pass
+            pass # skip that line
         elif line[0:3] == "dir":
-            pass
+            pass # skip that line
         else:
             size, name = line.split()
             size = int(size)

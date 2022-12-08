@@ -17,7 +17,6 @@ with open(main_input, "r") as file:
         except NameError:
             arr = np.array([int(x) for x in line], dtype=int)
 
-size = np.shape(arr.T)
 with np.nditer(arr.T, flags=['multi_index']) as ar:
     for elm in ar:
         x, y = ar.multi_index

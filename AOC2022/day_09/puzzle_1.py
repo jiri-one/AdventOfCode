@@ -11,7 +11,7 @@ y: int = 0
 coor: tuple[x, y] = (x, y)
 cur_head: coor = (x, y)
 cur_tail: coor = (x, y)
-coor_tail_trail: set[coor] = {(0, 0)}
+coor_tail_trail: set[coor] = {(x, y)} # initial coor of tail to the set
 
 # helper functions
 def get_surround_coor_set():

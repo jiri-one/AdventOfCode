@@ -22,7 +22,7 @@ class SnakePiece:
         """
         x = self.cur_tail[0]
         y = self.cur_tail[1]
-        return {(x, y), # overlap head and tail
+        return {(x, y), # overlap of head and tail
                 (x-1, y), # left
                 (x+1, y), # right
                 (x, y+1), # up
@@ -59,9 +59,9 @@ class SnakePiece:
                     self.cur_tail = (xt-1, yt+1)
                 elif xh == xt-2 and yh == yt-1: # diagonally left down (x-2,y-1)
                     self.cur_tail = (xt-1, yt-1)
-                elif xh == xt+2 and yh == yt+2: # # diagonally right up (x,y+2)
+                elif xh == xt+2 and yh == yt+2: # # diagonally right up (x+2,y+2)
                     self.cur_tail = (xt+1, yt+1)
-                elif xh == xt-2 and yh == yt-2: # diagonally left down (x,y-2)
+                elif xh == xt-2 and yh == yt-2: # diagonally left down (x-2,y-2)
                     self.cur_tail = (xt-1, yt-1)
                 elif xh == xt+2 and yh == yt-2: # diagonally right down (x+2,y-2)
                     self.cur_tail = (xt+1, yt-1)
@@ -74,6 +74,7 @@ class SnakePiece:
             
             self.coor_tail_trail.add(self.cur_tail)
             
+            # this is important part, where are other knots updated
             if self.follow:
                 self.follow.cur_head = self.cur_tail
                 self.follow.move_tail()
@@ -96,7 +97,7 @@ class SnakePiece:
     def __call__(self, cmd, step):
         self.move_head(cmd, step)
 
-
+# 9 knots/pieces and 10th is tail
 tail_8 = SnakePiece()
 tail_7 = SnakePiece(tail_8)
 tail_6 = SnakePiece(tail_7)

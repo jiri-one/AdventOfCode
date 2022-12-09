@@ -1,5 +1,4 @@
 from pathlib import Path
-import numpy as np
 
 # input files
 main_input = Path(__file__).parent / "input.txt" # result of this file is 2793

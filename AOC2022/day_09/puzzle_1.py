@@ -66,26 +66,17 @@ def move_tail():
 def move_head(cmd, steps):
     global cur_head
     x, y = cur_head[0], cur_head[1]
-    if cmd == "U": # we are going UP
-        for _ in range(steps):
+    for _ in range(steps):
+        if cmd == "U": # we are going UP
             y += 1
-            cur_head = (x, y)
-            move_tail()
-    elif cmd == "D": # we are going DOWN
-        for _ in range(steps):
+        elif cmd == "D": # we are going DOWN
             y -= 1
-            cur_head = (x, y)
-            move_tail()
-    elif cmd == "L": # we are going LEFT
-        for _ in range(steps):
+        elif cmd == "L": # we are going LEFT
             x -= 1
-            cur_head = (x, y)
-            move_tail()
-    elif cmd == "R": # we are going RIGHT
-        for _ in range(steps):
+        elif cmd == "R": # we are going RIGHT
             x += 1
-            cur_head = (x, y)
-            move_tail()
+        cur_head = (x, y)
+        move_tail()
 
 
 # read the initial file

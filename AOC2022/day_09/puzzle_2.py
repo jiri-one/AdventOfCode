@@ -2,8 +2,8 @@ from pathlib import Path
 import numpy as np
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 6745
-test_input = Path(__file__).parent / "test_input.txt" # result of this file is 13
+main_input = Path(__file__).parent / "input.txt" # result of this file is 2793
+test_input = Path(__file__).parent / "test_input.txt" # result of this file is 1
 
 class SnakePiece:
     def __init__(self, follow=None):
@@ -43,24 +43,34 @@ class SnakePiece:
                 if yh > yt: self.cur_tail = (xt, yt + 1) # move tail up
                 else: self.cur_tail = (xt, yt - 1) # move tail down
             else: # diagonal shifting of head
-                if xh == xt+1 and yh == yt+2: # diagonally up right (y+2)
+                if xh == xt+1 and yh == yt+2: # diagonally up right (x+1,y+2)
                     self.cur_tail = (xt+1, yt+1)
-                elif xh == xt-1 and yh == yt+2: # diagonally up left (y+2)
+                elif xh == xt-1 and yh == yt+2: # diagonally up left (x-1,y+2)
                     self.cur_tail = (xt-1, yt+1)
-                elif xh == xt+1 and yh == yt-2: # diagonally down right (y-2)
+                elif xh == xt+1 and yh == yt-2: # diagonally down right (x+1,y-2)
                     self.cur_tail = (xt+1, yt-1)
-                elif xh == xt-1 and yh == yt-2: # diagonally down left (y-2)
+                elif xh == xt-1 and yh == yt-2: # diagonally down left (x-1,y-2)
                     self.cur_tail = (xt-1, yt-1)
-                elif xh == xt+2 and yh == yt+1: # diagonally right up (x+2)
+                elif xh == xt+2 and yh == yt+1: # diagonally right up (x+2,y+1)
                     self.cur_tail = (xt+1, yt+1)
-                elif xh == xt+2 and yh == yt-1: # diagonally left up (x+2)
+                elif xh == xt+2 and yh == yt-1: # diagonally left up (x+2,y-1)
                     self.cur_tail = (xt+1, yt-1)
-                elif xh == xt-2 and yh == yt+1: # diagonally right down (x-2)
+                elif xh == xt-2 and yh == yt+1: # diagonally right down (x-2,y+1)
                     self.cur_tail = (xt-1, yt+1)
-                elif xh == xt-2 and yh == yt-1: # diagonally left down (x-2)
+                elif xh == xt-2 and yh == yt-1: # diagonally left down (x-2,y-1)
                     self.cur_tail = (xt-1, yt-1)
-                else:
-                    print("I dont know what to do.")
+                elif xh == xt+2 and yh == yt+2: # # diagonally right up (x,y+2)
+                    self.cur_tail = (xt+1, yt+1)
+                elif xh == xt-2 and yh == yt-2: # diagonally left down (x,y-2)
+                    self.cur_tail = (xt-1, yt-1)
+                elif xh == xt+2 and yh == yt-2: # diagonally right down (x+2,y-2)
+                    self.cur_tail = (xt+1, yt-1)
+                elif xh == xt-2 and yh == yt+2: # diagonally right down (x-2,y-2)
+                    self.cur_tail = (xt-1, yt+1)
+                else: # this is here only for debug purposes, this shouldn't happen
+                    print("I dont know what to do.") 
+                    print(self.cur_tail, self.cur_head)
+                    exit()
             
             self.coor_tail_trail.add(self.cur_tail)
             
@@ -106,14 +116,6 @@ with open(main_input, "r") as file:
         head(cmd, int(steps))
 
 
-print(len(head.coor_tail_trail))
-print(len(tail_1.coor_tail_trail))
-print(len(tail_2.coor_tail_trail))
-print(len(tail_3.coor_tail_trail))
-print(len(tail_4.coor_tail_trail))
-print(len(tail_5.coor_tail_trail))
-print(len(tail_6.coor_tail_trail))
-print(len(tail_7.coor_tail_trail))
 print(len(tail_8.coor_tail_trail))
         
         

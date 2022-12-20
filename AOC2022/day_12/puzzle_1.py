@@ -4,7 +4,7 @@ from string import ascii_lowercase
 from sys import maxsize
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt" # result of this file is 391
 test_input = Path(__file__).parent / "test_input.txt" # result of this file is 31
 
 # helper variables
@@ -42,7 +42,7 @@ arr_height.T[E] = 26 # give a end a right heights
 Sx, Sy = int(S[0]), int(S[1]) # coordinates of start in int
 Ex, Ey = int(E[0]), int(E[1]) # coordinates of end in int
 
-np.set_printoptions(threshold=maxsize)
+np.set_printoptions(threshold=maxsize, linewidth=1000)
 
 # helper functions
 def mark_surrounding_to_check(x, y, shortest_way):
@@ -98,27 +98,23 @@ while arr_way.T[E] == 0:
                 #print("x, y", x, y)
                 if (x != 0
                     and arr_way.T[x - 1][y] != 0
-                    and abs(arr_height.T[x - 1][y] - height) <= 1):
+                    and arr_height.T[x - 1][y] - height[...] >= -1):
                     left_way = arr_way.T[x - 1][y] + 1
-                    # print("left_way", left_way)
                 
                 if (x <= arr_way.T.shape[0] - 2
                     and arr_way.T[x + 1][y] != 0
-                    and abs(arr_height.T[x + 1][y] - height) <= 1):
+                    and arr_height.T[x + 1][y] - height[...] >= -1):
                     right_way = arr_way.T[x + 1][y] + 1
-                    # print("right_way", right_way)
                 
                 if (y != 0
                     and arr_way.T[x][y - 1] != 0
-                    and abs(arr_height.T[x][y - 1] - height) <= 1):
+                    and arr_height.T[x][y - 1] - height[...] >= -1):
                     up_way = arr_way.T[x][y - 1] + 1
-                    # print("up_way", up_way)
                 
                 if (y <= arr_way.T.shape[1] - 2
                     and arr_way.T[x][y + 1] != 0
-                    and abs(arr_height.T[x][y + 1] - height) <= 1):
+                    and arr_height.T[x][y + 1] - height[...] >= -1):
                     down_way = arr_way.T[x][y + 1] + 1
-                    # print("down_way", down_way)
 
                 way_list = [("left", left_way), ("right", right_way), ("up", up_way), ("down", down_way)]
                 surrounding_way = [w for w in way_list if w[1] is not None]
@@ -128,7 +124,8 @@ while arr_way.T[E] == 0:
                         way[...] = shortest_way[1]
                         check[...] = False
                         mark_surrounding_to_check(x, y, shortest_way)
-            #print(arr_way)
+    print(arr_way)
+    print("")
 
 
 print(int(arr_way.T[E]))                    

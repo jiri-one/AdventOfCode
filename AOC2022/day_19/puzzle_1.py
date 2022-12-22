@@ -1,4 +1,5 @@
 from pathlib import Path
+import hupper
 from string import ascii_lowercase, ascii_uppercase, punctuation
 
 # input files
@@ -21,3 +22,10 @@ with open(main_input, "r") as file:
         obsidian_robot = (line_list[3], line_list[4]) # ore and clay
         geode_robot = (line_list[5], line_list[6]) # ore and obsidian
         print(blueprint, ore_robot, clay_robot, obsidian_robot, geode_robot)
+
+
+def reload_runner():
+    reloader = hupper.start_reloader('puzzle_1.reload_runner')
+
+if __name__ == "__main__":
+    reload_runner()

@@ -2,17 +2,18 @@ from pathlib import Path
 from string import ascii_lowercase, ascii_uppercase
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 2497
-test_input = Path(__file__).parent / "test_input.txt" # result of this file is 70
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 2497
+test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 70
+
 
 # helper functions
 def create_priority_dict():
     priority: dict[str, int] = {}
-    priority_level_range = range(1,len(ascii_lowercase+ascii_uppercase)+1)
-    for prior, char in zip(priority_level_range,
-                           ascii_lowercase+ascii_uppercase):
+    priority_level_range = range(1, len(ascii_lowercase + ascii_uppercase) + 1)
+    for prior, char in zip(priority_level_range, ascii_lowercase + ascii_uppercase):
         priority[char] = prior
     return priority
+
 
 # helper variables
 priority: dict[str, int] = create_priority_dict()

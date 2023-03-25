@@ -41,6 +41,7 @@ def cretate_states(state):
          mats = state["mats"]
          robs = state["robs"]
          while minutes_to_end:
+             if 
              minutes_to_end -= 1
              mats = Materials(  mats.ore + robs.ore,
                                 mats.clay + robs.clay,

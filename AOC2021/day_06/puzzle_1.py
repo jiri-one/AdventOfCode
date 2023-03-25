@@ -9,7 +9,7 @@ lanternfish_array = np.array(lanternfish_list, dtype=int)
 
 for day in range(80):
     lanternfish_array = lanternfish_array - 1
-    minus_one_indexes = np.where(lanternfish_array==-1)
+    minus_one_indexes = np.where(lanternfish_array == -1)
     if np.size(minus_one_indexes):
         for minus_one_index in np.nditer(minus_one_indexes):
             lanternfish_array[minus_one_index] = 6

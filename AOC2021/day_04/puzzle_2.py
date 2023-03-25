@@ -14,9 +14,10 @@ with open("input.txt", "r") as file:
                 one_row = [(int(nr), False) for nr in line.split()]
                 array_in_list.append(one_row)
                 if len(array_in_list) == 5:
-                    array = np.array(array_in_list, dtype="i,bool").reshape(5,5)
+                    array = np.array(array_in_list, dtype="i,bool").reshape(5, 5)
                     arrays_list.append(array)
                     array_in_list = []
+
 
 def is_this_array_a_winner(array):
     # firstly check for winner row
@@ -35,6 +36,7 @@ def is_this_array_a_winner(array):
                 true_elements.append(True)
         if len(true_elements) == 5:
             return True
+
 
 def mark_numbers_as_true_in_arrays(nums, arrays):
     win_arrays = []
@@ -57,7 +59,10 @@ def mark_numbers_as_true_in_arrays(nums, arrays):
                 win_arrays.append(array_nr)
                 win_number = int(number)
 
-this_array_is_last_winner, win_number = mark_numbers_as_true_in_arrays(numbers, arrays_list)
+
+this_array_is_last_winner, win_number = mark_numbers_as_true_in_arrays(
+    numbers, arrays_list
+)
 
 elements_sum = 0
 for row in this_array_is_last_winner:

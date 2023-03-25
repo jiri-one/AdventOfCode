@@ -18,4 +18,3 @@ with open("input.txt", "r") as file:
     final = depth * horizontal_position
 
 print(final)
-    

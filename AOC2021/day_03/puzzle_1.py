@@ -29,5 +29,3 @@ with open("input.txt", "r") as file:
 gamma_rate_decimal = int(gamma_rate, 2)
 epsilon_rate_decimal = int(epsilon_rate, 2)
 print(gamma_rate_decimal * epsilon_rate_decimal)
-
-

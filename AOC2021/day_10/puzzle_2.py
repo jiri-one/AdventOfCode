@@ -4,7 +4,7 @@ incomplete = []
 corrupted = []
 
 with open("input.txt", "r") as file:
-    while line:=file.readline().strip():
+    while line := file.readline().strip():
         while True:
             new_line = line
             new_line = new_line.replace("{}", "")
@@ -15,11 +15,11 @@ with open("input.txt", "r") as file:
                 line = new_line
             else:
                 if (
-                    "}" not in new_line and
-                    ")" not in new_line and
-                    ">" not in new_line and
-                    "]" not in new_line
-                    ):
+                    "}" not in new_line
+                    and ")" not in new_line
+                    and ">" not in new_line
+                    and "]" not in new_line
+                ):
                     incomplete.append(new_line)
                 else:
                     corrupted.append(new_line)
@@ -29,7 +29,7 @@ total_scores = []
 for one_incomplete in incomplete:
     score = 0
     one_incomplete = list(one_incomplete)
-    one_incomplete.reverse() # I dont need to replace it for closing variant )}]>, its same with opening variant, reversed
+    one_incomplete.reverse()  # I dont need to replace it for closing variant )}]>, its same with opening variant, reversed
     for char in one_incomplete:
         if char == "[":
             score = score * 5 + 2
@@ -41,4 +41,4 @@ for one_incomplete in incomplete:
             score = score * 5 + 4
     total_scores.append(score)
 
-print(sorted(total_scores)[int(len(total_scores)/2)])
+print(sorted(total_scores)[int(len(total_scores) / 2)])

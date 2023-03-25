@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 74
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 74
 
 
 # read the initial file

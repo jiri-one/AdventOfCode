@@ -16,5 +16,3 @@ with open("input.txt", "r") as file:
     final = forward * deep
 
 print(final)
-    
-            

@@ -17,7 +17,7 @@ for item in lanternfish_list:
 for _ in range(number_of_days):
     zeroes = lanternfish_array[0]
     for index in range(8):
-        lanternfish_array[index] = lanternfish_array[index+1]
+        lanternfish_array[index] = lanternfish_array[index + 1]
     lanternfish_array[6] += zeroes
     lanternfish_array[8] = zeroes
 

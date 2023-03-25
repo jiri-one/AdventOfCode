@@ -1,8 +1,8 @@
 from pathlib import Path
 
 # input files
-main_input = Path(__file__).parent / "input.txt" # result of this file is 199628
-test_input = Path(__file__).parent / "test_input.txt" # result of this file is 45000
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 199628
+test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 45000
 
 # helper variables
 calories = []

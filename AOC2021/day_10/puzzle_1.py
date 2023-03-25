@@ -4,7 +4,7 @@ incomplete = []
 corrupted = []
 
 with open("input.txt", "r") as file:
-    while line:=file.readline().strip():
+    while line := file.readline().strip():
         while True:
             new_line = line
             new_line = new_line.replace("{}", "")
@@ -15,11 +15,11 @@ with open("input.txt", "r") as file:
                 line = new_line
             else:
                 if (
-                    "}" not in new_line and
-                    ")" not in new_line and
-                    ">" not in new_line and
-                    "]" not in new_line
-                    ):
+                    "}" not in new_line
+                    and ")" not in new_line
+                    and ">" not in new_line
+                    and "]" not in new_line
+                ):
                     incomplete.append(new_line)
                 else:
                     corrupted.append(new_line)

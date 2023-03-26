@@ -31,19 +31,22 @@ state: dict = {
     "robs": Robots(1, 0, 0, 0),  # robots: ore, clay, obsidian, geode
     "bp": None,  # BluePrint
     "mins": 24,  # minutest to the end
-}  
+}
 
 blueprints = []
 answer = 0
 
 
 def cretate_states(state):
-    # if I have material, buy robot
     bp_prices = state["bp"].prices
     for robot, prices in bp_prices.items():
         minutes_to_end = state["mins"]
         mats = state["mats"]
         robs = state["robs"]
+        # if I don't have material, I can't buy robot
+        if any(price > 0 and rob == 0 for price, rob in zip(prices, robs)):
+            continue
+        # if I have material, let's go buy robotm but check that first
         while minutes_to_end:
             # Can I buy robot?
             if all(  # All mats are higher then prices
@@ -69,25 +72,27 @@ def cretate_states(state):
                 mats.geode - prices.geode,
             )
             minutes_to_end -= 1
-            # And robots are mining
+            # And the robots continue to mine
             mats = Materials(
                 mats.ore + robs.ore,
                 mats.clay + robs.clay,
                 mats.obsidian + robs.obsidian,
                 mats.geode + robs.geode,
             )
+            # And increase the number of current robot
             robs = Robots(
                 robs.ore + int(robot == "ore_rob"),
                 robs.clay + int(robot == "clay_rob"),
                 robs.obsidian + int(robot == "obsidian_rob"),
-                robs.geode + int(robot == "geode_rob")
+                robs.geode + int(robot == "geode_rob"),
             )
+            # At the end crate new state
             new_state = deepcopy(state)
             new_state["mins"] = minutes_to_end
             new_state["mats"] = mats
             new_state["robs"] = robs
             yield new_state
-            
+
     # if I don't have material, wait
 
 
@@ -98,12 +103,18 @@ def get_best_score(blueprint, minutes):
     init["mins"] = minutes
     print(init)
     to_visit = [init]
+    best_score = -1
+    best_state = None
     while to_visit:
         state = to_visit.pop()
+        if state["mats"].geode > best_score:
+            best_score = state["mats"].geode
+            best_state = deepcopy(state)
         for new_state in cretate_states(state):
             print("------------------")
             print(new_state)
-    return 42
+            to_visit.append(new_state)
+    return best_score
 
 
 # read the initial file

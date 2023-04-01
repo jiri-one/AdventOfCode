@@ -37,15 +37,53 @@ blueprints = []
 answer = 0
 
 
+# read the initial file
+with open(test_input, "r") as file:
+    while line := file.readline():
+        for char in unwanted_chars:
+            line = line.replace(char, "")
+        line_list = [int(x) for x in line.split()]
+        (
+            blueprint,
+            ore_rob,
+            clay_rob,
+            obsidian_rob_ore,
+            obsidian_rob_clay,
+            geode_rob_ore,
+            geode_rob_obs,
+        ) = line_list
+        blueprint = BluePrint(
+            nr=blueprint,
+            prices={
+                "ore_rob": Price(ore_rob, 0, 0, 0),
+                "clay_rob": Price(clay_rob, 0, 0, 0),
+                "obsidian_rob": Price(obsidian_rob_ore, obsidian_rob_clay, 0, 0),
+                "geode_rob": Price(geode_rob_ore, 0, geode_rob_obs, 0),
+            },
+        )
+        blueprints.append(blueprint)
+        # pprint(blueprints)
+
+
 def cretate_states(state):
     bp_prices = state["bp"].prices
     for robot, prices in bp_prices.items():
         minutes_to_end = state["mins"]
         mats = state["mats"]
         robs = state["robs"]
-        # if I don't have material, I can't buy robot
-        if any(price > 0 and rob == 0 for price, rob in zip(prices, robs)):
+        print("PRICES", prices)
+        print("robs", state["robs"])
+        # if I don't have a robot for some kind of material and that material is needed (price), I don't need to continue
+        if any(
+            (
+                prices.ore > 0 and robs.ore == 0,
+                prices.clay > 0 and robs.clay == 0,
+                prices.obsidian > 0 and robs.obsidian == 0,
+                prices.geode > 0 and robs.geode == 0,
+            )
+        ):
             continue
+
         # if I have material, let's go buy robotm but check that first
         while minutes_to_end:
             # Can I buy robot?
@@ -62,7 +100,6 @@ def cretate_states(state):
                 mats.obsidian + robs.obsidian,
                 mats.geode + robs.geode,
             )
-            print(minutes_to_end, mats)
         if minutes_to_end:
             # Buy a robot (remove material)
             mats = Materials(
@@ -105,49 +142,25 @@ def get_best_score(blueprint, minutes):
     to_visit = [init]
     best_score = -1
     best_state = None
+    n = 0
     while to_visit:
         state = to_visit.pop()
         if state["mats"].geode > best_score:
             best_score = state["mats"].geode
             best_state = deepcopy(state)
         for new_state in cretate_states(state):
-            print("------------------")
-            print(new_state)
+            n += 1
+            if n % 1000 == 0:
+                print(f"{n}------------------")
+                print(f"{new_state['mats']}")
+                print(f"{new_state['robs']}")
             to_visit.append(new_state)
     return best_score
 
 
-# read the initial file
-with open(test_input, "r") as file:
-    while line := file.readline():
-        for char in unwanted_chars:
-            line = line.replace(char, "")
-        line_list = [int(x) for x in line.split()]
-        (
-            blueprint,
-            ore_rob,
-            clay_rob,
-            obsidian_rob_ore,
-            obsidian_rob_clay,
-            geode_rob_ore,
-            geode_rob_obs,
-        ) = line_list
-        blueprint = BluePrint(
-            nr=blueprint,
-            prices={
-                "ore_rob": Price(ore_rob, 0, 0, 0),
-                "clay_rob": Price(clay_rob, 0, 0, 0),
-                "obsidian_rob": Price(obsidian_rob_ore, obsidian_rob_clay, 0, 0),
-                "geode_rob": Price(geode_rob_ore, 0, geode_rob_obs, 0),
-            },
-        )
-        blueprints.append(blueprint)
-        # pprint(blueprints)
-
-
 for blueprint in blueprints:
     geodes = get_best_score(blueprint, 24)
-    print(f"{blueprint} \n___ {geodes=}")
+    # print(f"{blueprint} \n___ {geodes=}")
     answer += geodes * blueprint.nr
     break
 

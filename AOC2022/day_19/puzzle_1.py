@@ -66,13 +66,13 @@ with open(test_input, "r") as file:
 
 
 def cretate_states(state):
+    state = deepcopy(state)
     bp_prices = state["bp"].prices
+    minutes_to_end = state["mins"]
+    mats = state["mats"]
+    robs = state["robs"]
+    robot_build = False
     for robot, prices in bp_prices.items():
-        minutes_to_end = state["mins"]
-        mats = state["mats"]
-        robs = state["robs"]
-        print("PRICES", prices)
-        print("robs", state["robs"])
         # if I don't have a robot for some kind of material and that material is needed (price), I don't need to continue
         if any(
             (
@@ -84,7 +84,7 @@ def cretate_states(state):
         ):
             continue
 
-        # if I have material, let's go buy robotm but check that first
+        # if I have material, let's go buy robot, but check that first
         while minutes_to_end:
             # Can I buy robot?
             if all(  # All mats are higher then prices
@@ -100,6 +100,7 @@ def cretate_states(state):
                 mats.obsidian + robs.obsidian,
                 mats.geode + robs.geode,
             )
+
         if minutes_to_end:
             # Buy a robot (remove material)
             mats = Materials(
@@ -129,8 +130,22 @@ def cretate_states(state):
             new_state["mats"] = mats
             new_state["robs"] = robs
             yield new_state
+            robot_build = True
 
-    # if I don't have material, wait
+    # if I don't have material and I didn't built robot, wait
+    if not robot_build and minutes_to_end:
+        # Robots continue to mine
+        mats = Materials(
+            mats.ore + robs.ore * minutes_to_end,
+            mats.clay + robs.clay * minutes_to_end,
+            mats.obsidian + robs.obsidian * minutes_to_end,
+            mats.geode + robs.geode * minutes_to_end,
+        )
+        # At the end crate new state
+        new_state = deepcopy(state)
+        new_state["mins"] = 0
+        new_state["mats"] = mats
+        yield new_state
 
 
 def get_best_score(blueprint, minutes):
@@ -145,22 +160,24 @@ def get_best_score(blueprint, minutes):
     n = 0
     while to_visit:
         state = to_visit.pop()
+        print(len(to_visit))
+        n += 1
+        if n % 10000 == 0:
+            print(f"POP{n}------------------")
+            print(f"{new_state['mats']._asdict()}")
+            print(f"{new_state['robs']._asdict()}")
+            print("best_score", best_score)
         if state["mats"].geode > best_score:
             best_score = state["mats"].geode
             best_state = deepcopy(state)
         for new_state in cretate_states(state):
-            n += 1
-            if n % 1000 == 0:
-                print(f"{n}------------------")
-                print(f"{new_state['mats']}")
-                print(f"{new_state['robs']}")
             to_visit.append(new_state)
     return best_score
 
 
 for blueprint in blueprints:
-    geodes = get_best_score(blueprint, 24)
-    # print(f"{blueprint} \n___ {geodes=}")
+    geodes = get_best_score(blueprint, 19)
+    print(f"{geodes=}")
     answer += geodes * blueprint.nr
     break
 

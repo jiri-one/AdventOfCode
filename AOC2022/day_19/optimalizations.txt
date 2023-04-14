@@ -1,0 +1,7 @@
+Estimate the maximum amount of geode by assuming that we can build a geode robot at each time step. If that estimation is less or equal than the currently known maximal amount of geode, we do not have further investigate that branch.
+
+If we choose to wait (and not build a robot, but could have built it), do not build that robot in the next turn either.
+
+Do not build more robots than needed to build another robot, e.g. if the most expensive robot costs 5 ore, do not build more than 5 ore robots.
+
+Always build a geode robot if you can and do not investigate other branches in that case.

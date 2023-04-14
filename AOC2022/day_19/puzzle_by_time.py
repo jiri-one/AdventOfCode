@@ -1,7 +1,7 @@
 from pathlib import Path
 import hupper
 from string import ascii_lowercase, ascii_uppercase, punctuation
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
 # input files
 main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
@@ -9,7 +9,6 @@ test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 
 
 # helper variables
 unwanted_chars = ascii_lowercase + ascii_uppercase + punctuation
-total_minutes: int = 24
 
 
 @dataclass
@@ -21,66 +20,52 @@ class State(object):
     geo_price: tuple
     mats: tuple = (0, 0, 0, 0)  # initial state of material
     robs: tuple = (1, 0, 0, 0)  # initial state of robots
-    mins: int = 0 # minutes
-    
-    @property
-    def score(self):
-        return self.mats[-1]
-    
-    def __repr__(self):
-        def f(resources):
-            return '(' + ','.join(f'{n:2}' for n in resources) + ')'
-        return f'<{self.mins:2}: m={f(self.mats)} r={f(self.robs)}>'
 
     def get_geodes(self):
-        robs = self.robs
-        mats = self.mats
-        mins = self.mins
-        while mins != total_minutes:
+        minutes = 24
+        minute = 1
+        while minute != minutes+1:
+            print(f"{minute} MINUTE")
+            robs = self.robs
+            mats = self.mats
+            cur_rob = 3 # current robot
             build_robot = None
-            for rob_i, rob_price in enumerate((self.ore_price, self.clay_price, self.obs_price, self.geo_price)):
+            for rob_price in (self.geo_price, self.obs_price, self.clay_price, self.ore_price):
                 # buy robot if I can (but only if I don't have enough robots, or do not build more robots than needed to build another robot)
                 new_mats = []
                 if all(  # All current mats are higher (or same) then robot prices
                     mat >= price for mat, price in zip(mats, rob_price)
                 ): # I can afford robot
-                    #print(f"I can afford robot {cur_rob}")
-                    build_robot = rob_i
+                    print(f"I can afford robot {cur_rob}")
+                    build_robot = cur_rob
                     for p, m in zip(rob_price, mats):
-                        #print("p, m", p, m)
+                        print("p, m", p, m)
                         if p <= m:
                             m = m-p
                         new_mats.append(m)
                     new_mats = tuple(new_mats)
-                    #print("new_mats", new_mats)
+                    print("new_mats", new_mats)
                     self.mats = new_mats
-                    continue # But only one robot by one round
+                    break # But only one robot by one round
+                cur_rob -= 1
             # All robots continue to gather material
-            mats = tuple(m+r for m, r in zip(mats, robs))
-            #print("mats", self.mats)
+            self.mats = tuple(m+r for m, r in zip(self.mats, self.robs))
+            print("mats", self.mats)
             # and increase the number of robots
-            #print(f"a tady checkuju {build_robot}")
-            mins += 1
+            print(f"a tady checkuju {build_robot}")
             if build_robot:
-                robs = tuple(r+(1 if i == build_robot else 0) for i, r in enumerate(robs))
-                yield replace(
-                    self,
-                    mins=mins,
-                    mats=mats,
-                    robs=robs
-                )
-        if not mins:
-            yield replace(
-                self,
-                mins=mins,
-                mats=mats,
-            )
-        
+                print("jsem zde")
+                self.robs = tuple(r+(1 if i == build_robot else 0) for i, r in enumerate(robs))
+                print("robs", self.robs)
+            minute += 1
+            if minute == 10:
+                print("current mats", self.mats)
+                print("current robs", self.robs)
+                break
+                
+
 answer = 0
 states = set()
-
-best_score = -1
-n = 0
 
 # read the initial file
 with open(test_input, "r") as file:
@@ -103,19 +88,7 @@ with open(test_input, "r") as file:
             obs_price=(obsidian_rob_ore, obsidian_rob_clay, 0, 0),
             geo_price=(geode_rob_ore, 0, geode_rob_obs, 0),
         )
-        to_visit = [state]
-        try:
-            while state := to_visit.pop():
-                n += 1
-                if n % 10_000 == 0:
-                    print(n, state)
-                # print(state)
-                if state.score > best_score:
-                    best_score = state.score
-                for new_state in state.get_geodes():
-                    to_visit.append(new_state)
-        except IndexError:
-            print("BEST SCORE:", best_score)
+        state.get_geodes()
         #print("XXXXXXXXXXx", state.mats)
         #print(states)
         break

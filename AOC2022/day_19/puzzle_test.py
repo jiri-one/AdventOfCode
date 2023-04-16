@@ -1,6 +1,7 @@
 from pathlib import Path
 from string import ascii_lowercase, ascii_uppercase, punctuation
 from dataclasses import dataclass, replace
+from functools import lru_cache
 
 # input files
 main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
@@ -13,6 +14,7 @@ total_minutes: int = 24
 
 @dataclass(frozen=True)
 class State(object):
+    nr: int # blueprint number
     mins: int # minutes
     # All types are tuple: ore, clay, obsidian, geode
     ore_price: tuple
@@ -22,6 +24,18 @@ class State(object):
     max_price: tuple
     mats: tuple = (0, 0, 0, 0)  # initial state of material
     robs: tuple = (1, 0, 0, 0)  # initial state of robots
+    
+    @property
+    @lru_cache
+    def optimistic_estimate(self):
+        # A number that's bigger (or same) as the best
+        # score achievable from this node.
+        mr = self.mins
+        return (
+            self.score
+            + self.robs[-1] * mr
+            + (mr+1) * mr // 2
+        )
     
     @property
     def score(self):
@@ -115,6 +129,7 @@ with open(test_input, "r") as file:
             (geode_rob_ore, 0, geode_rob_obs, 0),
         )
         state = State(
+            nr = blueprint,
             mins = total_minutes,
             ore_price=(ore_rob, 0, 0, 0),
             clay_price=(clay_rob, 0, 0, 0),
@@ -132,21 +147,23 @@ with open(test_input, "r") as file:
         to_visit = [state]
         while to_visit:
             state = to_visit.pop()
+            if state.optimistic_estimate < best_score:
+                continue
             if state in visited:
                 continue
             visited.add(state)
             n += 1
             # if n % 10_00 == 0:
-            print(n, state)
-            if n == 10:
-                print(best_score)
-                exit()
+            # print(n, state)
+            # if n == 10:
+            #     print(best_score)
+            #     exit()
             if state.score > best_score:
                 #print(f'best score:', state.score)
                 best_score = state.score                    
             for new_state in state.get_states():
                 to_visit.append(new_state)
-        print(best_score)
-        break
+        answer += best_score * state.nr
 
-answer = 0
+
+print(answer)

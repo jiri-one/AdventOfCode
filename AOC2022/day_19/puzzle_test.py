@@ -104,11 +104,13 @@ class State(object):
                 mins=0,
                 mats=mats,
                 )
-        
-answer = 0
+
+initial_states = []
+answer_part1 = 0
+answer_part2 = 0
 
 # read the initial file
-with open(test_input, "r") as file:
+with open(main_input, "r") as file:
     while line := file.readline():
         for char in unwanted_chars:
             line = line.replace(char, "")
@@ -140,11 +142,15 @@ with open(test_input, "r") as file:
             float('inf'),
         )
         )
-        print(state)
+        initial_states.append(state)
+
+def get_quality_level(init_states):
+    answer = 0
+    for init_state in init_states:
         best_score = -1
         n = 0
         visited = set()
-        to_visit = [state]
+        to_visit = [init_state]
         while to_visit:
             state = to_visit.pop()
             if state.optimistic_estimate < best_score:
@@ -152,7 +158,7 @@ with open(test_input, "r") as file:
             if state in visited:
                 continue
             visited.add(state)
-            n += 1
+            # n += 1
             # if n % 10_00 == 0:
             # print(n, state)
             # if n == 10:
@@ -164,6 +170,7 @@ with open(test_input, "r") as file:
             for new_state in state.get_states():
                 to_visit.append(new_state)
         answer += best_score * state.nr
+    return answer
 
-
-print(answer)
+answer_part1 = get_quality_level(initial_states)
+print(f"{answer_part1=}")

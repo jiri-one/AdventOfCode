@@ -14,7 +14,7 @@ else:
 
 LINE_RE = re.compile(r'Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.')
 
-print(data)
+#print(data)
 
 @dataclass
 class Blueprint:
@@ -25,7 +25,7 @@ class Blueprint:
 blueprints = []
 for line in data:
     blueprint_number, ore_cost, clay_cost, obs_cost_ore, obs_cost_clay, geo_cost_ore, geo_cost_obs = (int(n) for n in LINE_RE.match(line).groups())
-    print(*(int(n) for n in LINE_RE.match(line).groups()))
+    #print(*(int(n) for n in LINE_RE.match(line).groups()))
     costs=(
         (ore_cost, 0, 0, 0),
         (clay_cost, 0, 0, 0),
@@ -41,7 +41,7 @@ for line in data:
         ),
     )
     blueprints.append(blueprint)
-pprint(blueprints)
+#pprint(blueprints)
 
 @dataclass(frozen=True)
 class Node:
@@ -169,24 +169,26 @@ def get_best_score(blueprint, total_minutes):
             continue
         visited.add(node)
         n += 1
-        if n % 10_000 == 0:
-            print(n, node)
+        # if n % 10_000 == 0:
+        print(n, node)
+        if n == 10:
+            return best_score
         if node.score > best_score:
-            print(f'best {blueprint.number}:', node)
+            #print(f'best {blueprint.number}:', node)
             best_score = node.score
-            best_node = node
         for new_node in node.generate_next_nodes():
             to_visit.append(new_node)
-    return best_node.score
+    return best_score
 
 answer = 0
 for blueprint in blueprints:
     geodes = get_best_score(blueprint, 24)
     print(f'{blueprint.number=}: {geodes=}')
+    break
     answer += geodes * blueprint.number
 
 print(f'part 1 {answer=}')
-
+exit()
 answer = 1
 for blueprint in blueprints[:3]:
     geodes = get_best_score(blueprint, 32)

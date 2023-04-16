@@ -2,6 +2,7 @@ from pathlib import Path
 from string import ascii_lowercase, ascii_uppercase, punctuation
 from dataclasses import dataclass, replace
 from functools import lru_cache
+import math
 
 # input files
 main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
@@ -106,8 +107,6 @@ class State(object):
                 )
 
 initial_states = []
-answer_part1 = 0
-answer_part2 = 0
 
 # read the initial file
 with open(main_input, "r") as file:
@@ -144,8 +143,8 @@ with open(main_input, "r") as file:
         )
         initial_states.append(state)
 
-def get_quality_level(init_states):
-    answer = 0
+def get_answer(init_states, part):
+    results = []
     for init_state in init_states:
         best_score = -1
         n = 0
@@ -169,8 +168,18 @@ def get_quality_level(init_states):
                 best_score = state.score                    
             for new_state in state.get_states():
                 to_visit.append(new_state)
-        answer += best_score * state.nr
-    return answer
+        if part == 1:
+            results.append(best_score * state.nr)
+        else:
+            results.append(best_score)
+    if part == 1:
+        return sum(results)
+    else:
+        return numpy.prod(results)
 
-answer_part1 = get_quality_level(initial_states)
+
+answer_part1 = get_answer(initial_states, 1) # 1 like part 1
 print(f"{answer_part1=}")
+# total_minutes: int = 32
+# answer_part2 = get_answer(initial_states[:2])
+# print(f"{answer_part2=}")

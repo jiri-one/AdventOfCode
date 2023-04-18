@@ -140,23 +140,25 @@ while True in arr_check:
                     ("down", down_way),
                 ]
                 surrounding_way = [w for w in way_list if w[1] is not None]
-                #print("surrounding_way", surrounding_way)
+                # print("surrounding_way", surrounding_way)
                 if len(surrounding_way) > 0:
                     shortest_way = sorted(surrounding_way, key=lambda x: x[1])[0]
                     if way[...] == 0 or shortest_way[1] <= way[...]:
                         way[...] = shortest_way[1]
                         check[...] = False
                         mark_surrounding_to_check(x, y, shortest_way)
-    if np.array_equal(arr_way_copy, arr_way):
+    if np.array_equal(
+        arr_way_copy, arr_way
+    ):  # if during iteration was changed nothing, break thel loop (it is prevention over infinity loop)
         break
-            
+
     print(arr_way)
     print(arr_height)
     print("")
 
-one_with_lowest_steps = 100000
-with np.nditer(
-    [arr_height, arr_way]) as ar:
+
+one_with_lowest_steps = 100000  # some random big number
+with np.nditer([arr_height, arr_way]) as ar:
     for height, way in ar:
         if height[...] == 1 and 0 < way[...] < one_with_lowest_steps:
             one_with_lowest_steps = way[...]

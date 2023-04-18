@@ -1,10 +1,10 @@
 import numpy as np
 from pathlib import Path
 from string import ascii_lowercase
-from sys import maxsize
+from sys import maxsize, argv
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 386
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 29
 
 # helper variables
@@ -24,7 +24,7 @@ char_to_num_dict()  # and run it to fullfill height dict
 
 
 # read the initial file
-with open(test_input, "r") as file:
+with open(argv[1], "r") as file:
     for line in file:
         line = line.strip()
         if line:
@@ -94,9 +94,9 @@ if Ey <= arr_way.T.shape[1] - 2 and arr_height.T[Ex][Ey + 1] >= 25:
     arr_way.T[Ex][Ey + 1] += 1
     arr_check.T[Ex][Ey + 1] = False
 
-cureent_height = 99
-steps_to_nearest_lowest_point = 0
-while cureent_height != 1:
+
+while True in arr_check:
+    arr_way_copy = np.copy(arr_way)
     with np.nditer(
         [arr_height, arr_check, arr_way], flags=["multi_index"], op_flags=["readwrite"]
     ) as ar:
@@ -108,28 +108,28 @@ while cureent_height != 1:
                 if (
                     x != 0
                     and arr_way.T[x - 1][y] != 0
-                    and abs(arr_height.T[x - 1][y] - height[...]) <= 1
+                    and height[...] - arr_height.T[x - 1][y] >= -1
                 ):
                     left_way = arr_way.T[x - 1][y] + 1
 
                 if (
                     x <= arr_way.T.shape[0] - 2
                     and arr_way.T[x + 1][y] != 0
-                    and abs(arr_height.T[x + 1][y] - height[...]) <= 1
+                    and height[...] - arr_height.T[x + 1][y] >= -1
                 ):
                     right_way = arr_way.T[x + 1][y] + 1
 
                 if (
                     y != 0
                     and arr_way.T[x][y - 1] != 0
-                    and abs(arr_height.T[x][y - 1] - height[...]) <= 1
+                    and height[...] - arr_height.T[x][y - 1] >= -1
                 ):
                     up_way = arr_way.T[x][y - 1] + 1
 
                 if (
                     y <= arr_way.T.shape[1] - 2
                     and arr_way.T[x][y + 1] != 0
-                    and abs(arr_height.T[x][y + 1] - height[...]) <= 1
+                    and height[...] - arr_height.T[x][y + 1] >= -1
                 ):
                     down_way = arr_way.T[x][y + 1] + 1
 
@@ -147,14 +147,18 @@ while cureent_height != 1:
                         way[...] = shortest_way[1]
                         check[...] = False
                         mark_surrounding_to_check(x, y, shortest_way)
-                        cureent_height = height[...]
-                        steps_to_nearest_lowest_point = way[...]
-                        #print("cureent_height", cureent_height)
-            
+    if np.array_equal(arr_way_copy, arr_way):
+        break
             
     print(arr_way)
     print(arr_height)
     print("")
 
+one_with_lowest_steps = 100000
+with np.nditer(
+    [arr_height, arr_way]) as ar:
+    for height, way in ar:
+        if height[...] == 1 and 0 < way[...] < one_with_lowest_steps:
+            one_with_lowest_steps = way[...]
 
-print(cureent_height, steps_to_nearest_lowest_point)
+print(one_with_lowest_steps)

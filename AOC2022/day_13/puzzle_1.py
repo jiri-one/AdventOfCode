@@ -15,8 +15,18 @@ except IndexError:
 except FileNotFoundError:
     print("Input file has to exist and the path has to be correct.")
 
+l_packets = []
+r_packets = []
+line_counter = 0
 with open(input_file, "r") as file:
     for line in file:
         line = line.strip()
         if line:
-            print(line)
+            line_counter +=1
+            if line_counter % 2 == 0:
+                r_packets.append(line)
+            else:
+                l_packets.append(line) 
+
+print(l_packets)
+print(r_packets)

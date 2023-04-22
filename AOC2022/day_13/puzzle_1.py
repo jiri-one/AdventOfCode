@@ -65,7 +65,7 @@ def compare_packets(l_packet, r_packet):
                 return True
             
             
-ne = 6 # number of elements
+ne = 8 # number of elements
 right_order = []
 for packet_index, (l_packet, r_packet) in enumerate(zip(l_packets[:ne], r_packets[:ne]), start=1):
     print(packet_index, (l_packet, r_packet))

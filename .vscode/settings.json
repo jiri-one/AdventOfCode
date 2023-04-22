@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.localEchoStyle": "dim",
+    "workbench.colorCustomizations": {
+        "terminal.foreground": "#67ffa4"
+    }
+}

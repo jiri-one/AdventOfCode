@@ -1,4 +1,5 @@
 from pathlib import Path
+from re import findall
 from sys import argv
 
 # set input file with data
@@ -20,16 +21,9 @@ with open(input_file, "r") as file:
     for line in file:
         line = line.strip()
         if line:
-            line = line.replace("[", "")
-            line = line.replace("]", "")
-            print(line)
             if line:
-                line = eval(line)
-                if isinstance(line, tuple):
-                    line = list(line)
-                elif isinstance(line, int):
-                    line = [line]
-                packets.append(line)
+                line = findall("\d+", line)
+                packets.append([int(x) for x in line])
             else:
                 packets.append([0])
 

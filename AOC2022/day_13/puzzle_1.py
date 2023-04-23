@@ -33,15 +33,8 @@ with open(input_file, "r") as file:
 # print(r_packets)
 
 # helper functions and variables
-# def same_type(first, second):
-#     return type(first) 
+
 def compare_packets(l_packet, r_packet):
-    if isinstance(l_packet, int):
-        print("prevest levou stranu na seznam:", l_packet)
-        l_packet = [l_packet] # convert l_packet to list
-    if isinstance(r_packet, int):
-        print("prevest pravou stranu na seznam:", r_packet)
-        r_packet = [r_packet] # convert r_packet to list
     for l_elm, r_elm in zip_longest(l_packet, r_packet):
         if l_elm is None: # Left side ran out of items
             print("tady dosly prvky leve strane", l_elm, r_elm)
@@ -80,7 +73,6 @@ ne = 1 # number of elements
 right_order = []
 for packet_index, (l_packet, r_packet) in enumerate(zip(l_packets, r_packets), start=1):
     print(packet_index, (l_packet, r_packet))
-    print(compare_packets(l_packet, r_packet))
     if compare_packets(l_packet, r_packet):
         right_order.append(packet_index)
 

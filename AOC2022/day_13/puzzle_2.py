@@ -9,7 +9,7 @@ try:
     if not input_file.exists():
         raise FileNotFoundError() 
     # standard input files are "input.txt" and "test_input.txt"
-    # # result of "input.txt" is XXX
+    # # result of "input.txt" is 27648
     # # result of "test_input.txt" is 140
 except IndexError:
     print("use format: python file.py some_input_file")
@@ -20,10 +20,11 @@ packets = [[2], [6]] # initial packets with divider packets too
 with open(input_file, "r") as file:
     for line in file:
         line = line.strip()
+        line = line.replace("[]", "[0]")
         if line:
-            if line:
-                line = findall("\d+", line)
-                packets.append([int(x) for x in line])
+            numbers = findall("\d+", line)
+            if numbers:
+                packets.append([int(x) for x in numbers])
             else:
                 packets.append([0])
 

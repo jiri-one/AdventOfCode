@@ -9,7 +9,7 @@ try:
     if not input_file.exists():
         raise FileNotFoundError() 
     # standard input files are "input.txt" and "test_input.txt"
-    # # result of "input.txt" is XXX
+    # # result of "input.txt" is 5330
     # # result of "test_input.txt" is 13
 except IndexError:
     print("use format: python file.py some_input_file")
@@ -74,39 +74,6 @@ def compare_packets(l_packet, r_packet):
             result = compare_packets(l_elm, r_elm)
             if result is not None:
                 return result
-
-# result = None
-# def compare_packets(l_packet, r_packet):
-#     if type(l_packet) == type(r_packet) and isinstance(r_packet, int): # both sides are integer
-#         print("POROVNAVAM", l_packet, r_packet)
-#         if l_packet < r_packet:
-#             print("leva je mensi nez prava", l_packet, r_packet)
-#             return True
-#         if l_packet > r_packet:
-#             print("prava je mensi nez leva", l_packet, r_packet)
-#             return False
-    
-#     # mixed types or two lists
-#     if isinstance(l_packet, int):
-#         l_packet = [l_packet] # convert l_packet to list
-#         print("prevest levou stranu na seznam:", l_packet)
-#     if isinstance(r_packet, int):
-#         r_packet = [r_packet] # convert r_packet to list
-#         print("prevest pravou stranu na seznam:", r_packet)
-#     print("tady dva seznamy", l_packet, r_packet)
-#     while True:
-#         try:
-#             l_elm = l_packet.pop(0)
-#         except IndexError:
-#             return True # Left side ran out of items
-#         try:
-#             r_elm = r_packet.pop(0)
-#         except IndexError:
-#             return False # Right side ran out of items
-#         print("HMMMMMM", l_elm, r_elm)
-#         if compare_packets(l_elm, r_elm):
-#             return True
-
         
             
 ne = 1 # number of elements

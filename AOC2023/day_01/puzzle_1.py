@@ -2,7 +2,7 @@ from pathlib import Path
 from sys import argv, exit
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 54338
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 142
 
 if len(argv) > 1 and argv[1] == "--test":
@@ -10,7 +10,6 @@ if len(argv) > 1 and argv[1] == "--test":
 
 # helper variables
 values = []
-actual_calories = 0
 
 # read the initial file
 with open(main_input, "r") as file:

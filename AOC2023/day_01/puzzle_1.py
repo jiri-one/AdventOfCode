@@ -5,7 +5,7 @@ from sys import argv, exit
 main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 142
 
-if argv[1] == "--test":
+if len(argv) > 1 and argv[1] == "--test":
     main_input = test_input
 
 # helper variables

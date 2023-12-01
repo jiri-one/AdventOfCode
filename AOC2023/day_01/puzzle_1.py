@@ -1,9 +1,9 @@
 from pathlib import Path
-from sys import argv, exit
+from sys import argv
 
 # input files
 main_input = Path(__file__).parent / "input.txt"  # result of this file is 54338
-test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 142
+test_input = Path(__file__).parent / "test_input_1.txt"  # result of this file is 142
 
 if len(argv) > 1 and argv[1] == "--test":
     main_input = test_input

@@ -2,7 +2,7 @@ from pathlib import Path
 from sys import argv
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 76008
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 2286
 
 if len(argv) > 1 and argv[1] == "--test":
@@ -17,7 +17,6 @@ powers = []
 with open(main_input, "r") as file:
     for line in file:
         line = line.strip()
-        print(line)
         if len(line) != 0:
             game_nr = int(line.split(":")[0].removeprefix("Game "))
             raw_game = [r.strip() for r in line.split(":")[1].strip().split(";")]

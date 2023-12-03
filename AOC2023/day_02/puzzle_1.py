@@ -18,7 +18,6 @@ impossible_games = set()
 with open(main_input, "r") as file:
     for line in file:
         line = line.strip()
-        print(line)
         if len(line) != 0:
             game_nr = int(line.split(":")[0].removeprefix("Game "))
             games.append(game_nr)

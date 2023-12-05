@@ -31,12 +31,57 @@ with open(main_input, "r") as file:
             arr = np.array([x for x in new_line], dtype=object)
 
 size = np.shape(arr.T)
+print(size)
 
 print(arr)
-
+x_indexes = []
+y_index = None
+engine_parts = []
 with np.nditer(arr.T, flags=["multi_index", "refs_ok"]) as ar:
     for elm in ar:
         x, y = ar.multi_index
+        element = arr.T[x][y]
+        if isinstance(element, int):
+            x_indexes.append(x)
+            y_index = y
+        if x_indexes and not isinstance(element, int):
+            # try surroundings of number (x_indexes) and reset indexes (x and y)
+            check_this_coor: list[tuple[int, int]] = list()
+            # create coordinates to check
+            for x_index in x_indexes:
+                if x_index != 0:
+                    check_this_coor.append((x_index-1, y))
+                if x_index != 0 and y_index != 0:
+                    check_this_coor.append((x_index-1, y-1))
+                if x_index != 0 and y_index < size[1]-1:
+                    check_this_coor.append((x_index-1, y+1))
+                if y_index != 0:
+                    check_this_coor.append((x_index, y-1))
+                if y_index < size[1]-1:
+                    check_this_coor.append((x_index, y+1))
+                
+                if x_index < size[0]-1:
+                    check_this_coor.append((x_index+1, y))
+                if x_index < size[0]-1 and y_index != 0:
+                    check_this_coor.append((x_index+1, y-1))
+                if x_index < size[0]-1 and y_index < size[1]-1:
+                    check_this_coor.append((x_index+1, y+1))
+            # check the coordinates, which are surrounding one part of number
+            
+            
+
+
+                
+                
+
+
+            
+            
+
+
+            
+            
+
 
 
 

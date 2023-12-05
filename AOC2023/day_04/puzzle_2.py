@@ -3,7 +3,7 @@ from sys import argv
 from dataclasses import dataclass
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 13768818
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 30
 
 if len(argv) > 1 and argv[1] == "--test":

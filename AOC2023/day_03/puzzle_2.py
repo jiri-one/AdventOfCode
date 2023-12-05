@@ -3,7 +3,7 @@ import numpy as np
 from sys import argv
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 72553319
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 467835
 
 if len(argv) > 1 and argv[1] == "--test":
@@ -37,7 +37,7 @@ print(arr)
 x_indexes = []
 number = ""
 y_index = None
-engine_parts: dict[int, tuple[int, int]] = {} # dict where key is number and value are coordinates of asterisk - *
+engine_parts: dict[tuple[int, int], list] = dict() # dict where key is asterisk coordinates and value is the list of part numbers
 with np.nditer(arr.T, flags=["multi_index", "refs_ok"]) as ar:
     for elm in ar:
         x, y = ar.multi_index
@@ -71,57 +71,17 @@ with np.nditer(arr.T, flags=["multi_index", "refs_ok"]) as ar:
             for coor in check_this_coor:
                 x, y = coor
                 if isinstance(arr.T[x][y], str) and arr.T[x][y] == "*":
-                    engine_parts[int(number)] = coor
+                    if engine_parts.get(coor, None):
+                        engine_parts[coor].append(int(number))
+                    else:
+                        engine_parts[coor] = [int(number)]
             x_indexes = list()
             number = ""
             y_index = None
 
-asterisk_set = set(engine_parts.values())
-
 parts = []
-for asterisk_coor in asterisk_set:
-    numbers = list()
-    for part_number, coor in engine_parts.items():
-        if asterisk_coor == coor:
-            numbers.append(part_number)
-    if len(numbers) == 2:
-        parts.append(numbers[0] * numbers[1])
-
+for coor, part_list in engine_parts.items():
+    if len(part_list) == 2:
+        parts.append(part_list[0] * part_list[1])
 
 print(sum(parts))
-
-            
-
-            
-            
-
-
-                
-                
-
-
-            
-            
-
-
-            
-            
-
-
-
-
-
-#         if x == 0 or y == 0 or x == size[0] - 1 or y == size[1] - 1:
-#             visible += 1
-#         else:
-#             col = arr.T[x]
-#             row = arr[y]
-#             if (
-#                 np.all(col[:y] < elm)
-#                 or np.all(col[y + 1 :] < elm)
-#                 or np.all(row[:x] < elm)
-#                 or np.all(row[x + 1 :] < elm)
-#             ):
-#                 visible += 1
-
-# print(visible)

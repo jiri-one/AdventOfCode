@@ -77,39 +77,3 @@ with np.nditer(arr.T, flags=["multi_index", "refs_ok"]) as ar:
             y_index = None
 
 print(sum(engine_parts))
-
-            
-
-            
-            
-
-
-                
-                
-
-
-            
-            
-
-
-            
-            
-
-
-
-
-
-#         if x == 0 or y == 0 or x == size[0] - 1 or y == size[1] - 1:
-#             visible += 1
-#         else:
-#             col = arr.T[x]
-#             row = arr[y]
-#             if (
-#                 np.all(col[:y] < elm)
-#                 or np.all(col[y + 1 :] < elm)
-#                 or np.all(row[:x] < elm)
-#                 or np.all(row[x + 1 :] < elm)
-#             ):
-#                 visible += 1
-
-# print(visible)

@@ -3,8 +3,8 @@ import numpy as np
 from sys import argv
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is 1703
-test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 21
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 507214
+test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 4361
 
 if len(argv) > 1 and argv[1] == "--test":
     main_input = test_input

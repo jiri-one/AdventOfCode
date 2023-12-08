@@ -36,30 +36,39 @@ with open(main_input, "r") as file:
                 m.ranges.append(tuple([ranges[1], ranges[0], ranges[2]]))
             maps.append(m)
 
-# print(maps)
-src_vals = list(range(seeds[0], seeds[0]+seeds[1])) + list(range(seeds[2], seeds[2]+seeds[3]))
-output = []
-for map_nr, m in enumerate(maps):
-    # print(m)
-    for src_val in src_vals:
-        for r in m.ranges:
-            src_range = range(r[0], r[0]+r[2])
-            if src_val in src_range:
-                #breakpoint()
-                src_index = src_range.index(src_val)
-                dst_range = range(r[1], r[1]+r[2])
-                dst_nr = dst_range[src_index]
-                #print("seed_nr", in_val, "src_range", src_range, "dst_range", dst_range, "seed_index", seed_index, "soil_nr", soil_nr)
-                output.append(dst_nr)
-                break
-        else:
-            dst_nr = src_val
-            output.append(dst_nr)
-    src_vals = output
-    output = []
-    # if map_nr == 1:
-    #     break
+initial_ranges = []
+start, stop = 0, 1
 
-print(min(src_vals))
+for _ in range(int(len(seeds)/2)):
+    current_range = range(seeds[start], seeds[start]+seeds[stop])
+    initial_ranges.append(range(seeds[start], seeds[start]+seeds[stop]))
+    start += 2
+    stop += 2
+
+lowest_location = 1000000000000
+
+for init_r in initial_ranges:
+    for src_val in init_r:
+        current = src_val
+        for m in maps:
+            for r in m.ranges:
+                src_range = range(r[0], r[0]+r[2])
+                if current in src_range:
+
+                    src_index = src_range.index(current)
+                    dst_range = range(r[1], r[1]+r[2])
+                    dst_nr = dst_range[src_index]
+
+                    break
+            else:
+                dst_nr = current
+
+            current = dst_nr
+
+        if current < lowest_location:
+            lowest_location = current
+
+print(lowest_location)
+
 
 print("__________________________")

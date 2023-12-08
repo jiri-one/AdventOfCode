@@ -1,51 +1,65 @@
 from pathlib import Path
 from sys import argv
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is 13768818
-test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 30
+main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 46
 
 if len(argv) > 1 and argv[1] == "--test":
     main_input = test_input
 
 # helper variables
 @dataclass
-class Card:
-    card: int
-    count: int
-    matching_numbers: int
+class Map:
+    src: str
+    dst: str
+    ranges: list[tuple[int, int, int]] = field(default_factory=list) # tuple is src int, dst int, range int
 
-    def increase_count(self):
-        self.count += 1
-
-    
-total_cards:  dict[int, Card] = dict() # dict with key of card number and value is Card instance
+seeds = list()
+maps: list[Map] = list()
 
 # read the initial file
 with open(main_input, "r") as file:
     while line := file.readline():
         line = line.strip()
-        card = int(line.split(":")[0].removeprefix("Card "))
-        part1, part2 = line.split(":")[1].split("|")
-        win_numbers: set = set(int(n) for n in part1.strip().split())
-        my_numbers: set = set(int(n) for n in part2.strip().split())
-        common_numbers: set = win_numbers.intersection(my_numbers)
-        matching_numbers: int = len(common_numbers)
-        # initial cards, for now we have only 1 card from all card numbers
-        total_cards[card] = Card(card, 1, matching_numbers)
+        if "seeds: " in line:
+            line = line.removeprefix("seeds: ")
+            seeds = [int(s) for s in line.split()]
+        elif " map:" in line:
+            src, dst = line.removesuffix(" map:").split("-to-")
+            m = Map(src, dst)
+            while src_to_dst_map_line := file.readline():
+                if src_to_dst_map_line.strip() == "":
+                    break
+                ranges = [int(nr) for nr in src_to_dst_map_line.split()]
+                m.ranges.append(tuple([ranges[1], ranges[0], ranges[2]]))
+            maps.append(m)
 
-for nr in range(1, len(total_cards)+1):
-    card = total_cards[nr]
-    matching_numbers = card.matching_numbers
-    for _ in range(card.count):
-        for card_copy_nr in range(nr+1, nr+matching_numbers+1):
-            one_of_next_cards = total_cards[card_copy_nr]
-            one_of_next_cards.increase_count()
+# print(maps)
+src_vals = list(range(seeds[0], seeds[0]+seeds[1])) + list(range(seeds[2], seeds[2]+seeds[3]))
+output = []
+for map_nr, m in enumerate(maps):
+    # print(m)
+    for src_val in src_vals:
+        for r in m.ranges:
+            src_range = range(r[0], r[0]+r[2])
+            if src_val in src_range:
+                #breakpoint()
+                src_index = src_range.index(src_val)
+                dst_range = range(r[1], r[1]+r[2])
+                dst_nr = dst_range[src_index]
+                #print("seed_nr", in_val, "src_range", src_range, "dst_range", dst_range, "seed_index", seed_index, "soil_nr", soil_nr)
+                output.append(dst_nr)
+                break
+        else:
+            dst_nr = src_val
+            output.append(dst_nr)
+    src_vals = output
+    output = []
+    # if map_nr == 1:
+    #     break
 
-cards_count = 0
-for card in total_cards.values():
-    cards_count += card.count
+print(min(src_vals))
 
-print(cards_count)
 print("__________________________")

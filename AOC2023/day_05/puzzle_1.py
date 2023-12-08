@@ -36,7 +36,6 @@ with open(main_input, "r") as file:
                 m.ranges.append(tuple([ranges[1], ranges[0], ranges[2]]))
             maps.append(m)
 
-# get soil number
 # print(maps)
 src_vals = seeds
 output = []
@@ -62,12 +61,5 @@ for map_nr, m in enumerate(maps):
     #     break
 
 print(min(src_vals))
-
-
-
-        
-
-# print(seeds)
-# print(maps)
 
 print("__________________________")

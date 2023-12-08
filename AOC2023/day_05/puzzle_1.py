@@ -3,8 +3,8 @@ from sys import argv
 from dataclasses import dataclass, field
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is 20117
-test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 13
+main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 35
 
 if len(argv) > 1 and argv[1] == "--test":
     main_input = test_input
@@ -38,25 +38,30 @@ with open(main_input, "r") as file:
 
 # get soil number
 print(maps)
-soil_numbers = []
-for m in maps:
+src_vals = seeds
+output = []
+for map_nr, m in enumerate(maps):
     print(m)
-    for seed_nr in seeds:
+    for src_val in src_vals:
         for r in m.ranges:
             src_range = range(r[0], r[0]+r[2])
-            if seed_nr in src_range:
-                seed_index = src_range.index(seed_nr)
+            if src_val in src_range:
+                #breakpoint()
+                src_index = src_range.index(src_val)
                 dst_range = range(r[1], r[1]+r[2])
-                soil_nr = dst_range[seed_index]
-                print("seed_nr", seed_nr, "src_range", src_range, "dst_range", dst_range, "seed_index", seed_index, "soil_nr", soil_nr)
-                soil_numbers.append(soil_nr)
+                dst_nr = dst_range[src_index]
+                #print("seed_nr", in_val, "src_range", src_range, "dst_range", dst_range, "seed_index", seed_index, "soil_nr", soil_nr)
+                output.append(dst_nr)
                 break
         else:
-            soil_nr = seed_nr
-            soil_numbers.append(soil_nr)
-    break
+            dst_nr = src_val
+            output.append(dst_nr)
+    src_vals = output
+    output = []
+    # if map_nr == 1:
+    #     break
 
-print(soil_numbers)
+print(min(src_vals))
 
 
 

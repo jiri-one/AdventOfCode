@@ -14,8 +14,7 @@ if len(argv) > 1 and argv[1] == "--test":
 class Map:
     src: str
     dst: str
-    map: list[tuple[int, int, int]] = field(default_factory=list)
-
+    ranges: list[tuple[int, int, int]] = field(default_factory=list) # tuple is src int, dst int, range int
 
 seeds = list()
 maps: list[Map] = list()
@@ -29,17 +28,41 @@ with open(main_input, "r") as file:
             seeds = [int(s) for s in line.split()]
         elif " map:" in line:
             src, dst = line.removesuffix(" map:").split("-to-")
-            print(src, dst)
             m = Map(src, dst)
             while src_to_dst_map_line := file.readline():
                 if src_to_dst_map_line.strip() == "":
                     break
-                m.map.append(tuple(int(nr) for nr in src_to_dst_map_line.split()))
+                ranges = [int(nr) for nr in src_to_dst_map_line.split()]
+                m.ranges.append(tuple([ranges[1], ranges[0], ranges[2]]))
             maps.append(m)
+
+# get soil number
+print(maps)
+soil_numbers = []
+for m in maps:
+    print(m)
+    for seed_nr in seeds:
+        for r in m.ranges:
+            src_range = range(r[0], r[0]+r[2])
+            if seed_nr in src_range:
+                seed_index = src_range.index(seed_nr)
+                dst_range = range(r[1], r[1]+r[2])
+                soil_nr = dst_range[seed_index]
+                print("seed_nr", seed_nr, "src_range", src_range, "dst_range", dst_range, "seed_index", seed_index, "soil_nr", soil_nr)
+                soil_numbers.append(soil_nr)
+                break
+        else:
+            soil_nr = seed_nr
+            soil_numbers.append(soil_nr)
+    break
+
+print(soil_numbers)
+
+
 
         
 
-print(seeds)
-print(maps)
+# print(seeds)
+# print(maps)
 
 print("__________________________")

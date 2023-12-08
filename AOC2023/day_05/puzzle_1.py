@@ -3,7 +3,7 @@ from sys import argv
 from dataclasses import dataclass, field
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 662197086
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 35
 
 if len(argv) > 1 and argv[1] == "--test":
@@ -37,11 +37,11 @@ with open(main_input, "r") as file:
             maps.append(m)
 
 # get soil number
-print(maps)
+# print(maps)
 src_vals = seeds
 output = []
 for map_nr, m in enumerate(maps):
-    print(m)
+    # print(m)
     for src_val in src_vals:
         for r in m.ranges:
             src_range = range(r[0], r[0]+r[2])

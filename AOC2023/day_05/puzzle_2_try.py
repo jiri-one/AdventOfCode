@@ -3,7 +3,7 @@ from sys import argv
 from dataclasses import dataclass, field
 
 # input files
-main_input = Path(__file__).parent / "input.txt"  # result of this file is XXX
+main_input = Path(__file__).parent / "input.txt"  # result of this file is 52510809
 test_input = Path(__file__).parent / "test_input.txt"  # result of this file is 46
 
 if len(argv) > 1 and argv[1] == "--test":
@@ -47,6 +47,8 @@ def sort_ranges(ranges: list[range]):
     return new_ranges
 
 def reduce_ranges(ranges: list[range]):
+    if len(ranges) == 0:
+        return ranges
     index = 0
     while True:
         if index >= len(ranges)-1:
@@ -54,6 +56,14 @@ def reduce_ranges(ranges: list[range]):
         #print(index, ranges)
         r1 = ranges.pop(index)
         r2 = ranges.pop(index)
+
+        if len(r1) == 0:
+            ranges.insert(index, r2)
+            continue
+
+        if len(r2) == 0:
+            ranges.insert(index, r1)
+            continue    
         
         if r1.stop < r2.start:
             ranges.insert(index, r1)
@@ -76,76 +86,92 @@ def optimize_ranges(ranges: list[range]):
     sorted_ranges = sort_ranges(ranges)
     return reduce_ranges(sorted_ranges)
 
-inputs = [range(82,83)]
+#inputs = [range(82,83)]
+mapped = []
+remains = []
+
 for m in maps:
     print("MAPS:", m.src, "to", m.dst)
     print("==============================")
+
     for rng in m.ranges:
         src_range, dst_range = rng
         move = dst_range.start - src_range.start
         print("src_range", src_range, "dst_range", dst_range)
         print("move", move)
         print("current input for map:", inputs)
-        new_inputs = []
-        try:
-            while inp:= inputs.pop(0):
-                print("input range", inp)
-                if inp.start in src_range and inp[-1] in src_range:
-                    print("input completely in src_range")
-                    new_range = range(inp.start+move, inp.stop+move)
-                    new_inputs.append(new_range)
-                
-                elif (
-                    inp.start not in src_range
-                    and inp[-1] not in src_range
-                    and src_range.start not in inp
-                    and src_range[-1] not in inp
-                    ):
-                    print("comletely out")
-                    new_inputs.append(inp)
-                
-                elif src_range.start in inp and src_range[-1] in inp:
-                    print("src_range completely in input map")
-                    new_range = range(src_range.start+move, src_range.stop+move)
-                    rest_of_range_to_start = range(inp.start, src_range.start)
-                    rest_of_range_from_end = range(src_range.stop, inp.stop)
-                    new_inputs.append(new_range)
-                    new_inputs.append(rest_of_range_to_start)
-                    new_inputs.append(rest_of_range_from_end)
-                    
-                    assert len(new_range) + len(rest_of_range_to_start) + len(rest_of_range_from_end) == len(inp)
-                                   
-                elif inp.start in src_range and inp[-1] not in src_range:
-                    print("start is in src_range, end is not")
-                    new_range = range(inp.start+move, src_range.stop+move)
-                    rest_of_range = range(src_range.stop, inp.stop)
-                    
-                    new_inputs.append(new_range)
-                    new_inputs.append(rest_of_range)
-                    print(len(new_range), len(rest_of_range), len(inp))
-                    print(new_range, rest_of_range, inp)
-                    assert len(new_range) + len(rest_of_range) == len(inp)
-                
-                elif inp.start not in src_range and inp[-1] in src_range:
-                    print("start is not in src_range, end is")
-                    new_range = range(src_range.start+move, inp.stop+move)
-                    rest_of_range = range(inp.start, src_range.start)
-                    print("rest_of_range[-1]", rest_of_range[-1], "new_range[0]", new_range[0])
-                    
-                    new_inputs.append(new_range)
-                    new_inputs.append(rest_of_range)
-                    print(len(new_range), len(rest_of_range), len(inp))
-                    print(f"{new_range=}, {rest_of_range=}, {inp=}")
-                    assert len(new_range) + len(rest_of_range) == len(inp)
+        
+        while True:
+            try:
+                inp = inputs.pop(0)
+            except IndexError:
+                inputs = optimize_ranges(remains)
+                print("UNOPTIMIZED REMAINS", remains)
+                print("REMAINS INPUSTS", inputs)
+                remains = list()
+                break
 
-        except IndexError:
-            print("new_inputs", new_inputs)
-            inputs = optimize_ranges(new_inputs)
-            print("optimized inputs", inputs)
-    
-    
-print(min([x[0] for x in new_inputs]))
-    
+            print("input range", inp)
+            if inp.start in src_range and inp[-1] in src_range:
+                print("input completely in src_range")
+                new_range = range(inp.start+move, inp.stop+move)
+                mapped.append(new_range)
+                print("NEW RANGE IS:", new_range)
+            
+            elif (
+                inp.start not in src_range
+                and inp[-1] not in src_range
+                and src_range.start not in inp
+                and src_range[-1] not in inp
+                ):
+                print("comletely out")
+                remains.append(inp)
+            
+            elif src_range.start in inp and src_range[-1] in inp:
+                print("src_range completely in input map")
+                new_range = range(src_range.start+move, src_range.stop+move)
+                rest_of_range_to_start = range(inp.start, src_range.start)
+                rest_of_range_from_end = range(src_range.stop, inp.stop)
+                mapped.append(new_range)
+                remains.append(rest_of_range_to_start)
+                remains.append(rest_of_range_from_end)
+                print(f"NEW RANGE {new_range} rest_of_range_to_start {rest_of_range_to_start} rest_of_range_from_end {rest_of_range_from_end}")
+                
+                assert len(new_range) + len(rest_of_range_to_start) + len(rest_of_range_from_end) == len(inp)
+                                
+            elif inp.start in src_range and inp[-1] not in src_range:
+                print("start is in src_range, end is not")
+                new_range = range(inp.start+move, src_range.stop+move)
+                rest_of_range = range(src_range.stop, inp.stop)
+                
+                mapped.append(new_range)
+                remains.append(rest_of_range)
+                print(len(new_range), len(rest_of_range), len(inp))
+                print(new_range, rest_of_range, inp)
+                assert len(new_range) + len(rest_of_range) == len(inp)
+            
+            elif inp.start not in src_range and inp[-1] in src_range:
+                print("start is not in src_range, end is")
+                new_range = range(src_range.start+move, inp.stop+move)
+                rest_of_range = range(inp.start, src_range.start)
+                print("rest_of_range[-1]", rest_of_range[-1], "new_range[0]", new_range[0])
+                
+                mapped.append(new_range)
+                remains.append(rest_of_range)
+                print(len(new_range), len(rest_of_range), len(inp))
+                print(f"{new_range=}, {rest_of_range=}, {inp=}")
+                assert len(new_range) + len(rest_of_range) == len(inp)
+            else:
+                print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    else:
+        print("MAPPED AT THE END OF FOR:", mapped)
+        optimized_mapped = optimize_ranges(mapped)
+        print("optimized_mapped", optimized_mapped)
+        inputs += optimized_mapped
+        mapped = list()
+        inputs = optimize_ranges(inputs)
+        print("INPUSTS", inputs)
 
-#print(inputs)
-#print(maps)
+    
+print(min([x[0] for x in inputs]))
+ 

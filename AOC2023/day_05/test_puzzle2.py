@@ -14,3 +14,8 @@ def test_reduce_ranges():
     origin_ranges = RANGES[:]
     reduced_ranges = reduce_ranges(origin_ranges)
     assert reduced_ranges == REDUCED_RANGES
+
+def test_reduce_ranges_which_dont_need_to_reduce():
+    some_ranges = [range(0, 1), range(45, 56), range(93, 93), range(97, 100)]
+    reduced_ranges = reduce_ranges(some_ranges)
+    assert some_ranges == reduced_ranges

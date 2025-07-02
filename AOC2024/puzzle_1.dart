@@ -1,6 +1,6 @@
 import 'dart:io';
 
-String INPUT = "input.txt"; // result is 
+String INPUT = "input.txt"; // result is 2580760
 String TEST_INPUT = "test_input.txt"; // result should be 11
 
 void main() {

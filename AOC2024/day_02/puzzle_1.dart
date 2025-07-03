@@ -1,19 +1,15 @@
-import 'dart:io';
+import '../../get_input_strings.dart' show getInputStrings;
 
-String INPUT = "input.txt"; // result is
-String TEST_INPUT = "test_input.txt"; // result should be 2
+// test results should be 2
+// result is 390
 
+// helper functions
 bool isIncreasing(int a, int b) {
-  return ((a - b) <= 0) ? true : false;
+  return ((a - b) < 0) ? true : false;
 }
 
-void main() {
-  // Read the input from a file named 'input.txt'
-  final input = File(TEST_INPUT).readAsStringSync().trim();
-
-  // Split the input into lines
-  final lines = input.split('\n');
-
+void main(List<String> arguments) {
+  var (String input, List<String> lines) = getInputStrings(arguments);
   int totalSafeSum = 0;
 
   // Iterate through each line
@@ -33,11 +29,13 @@ void main() {
         safe = false;
         break;
       }
+      if (previous == oneLineNumbers[i]) {
+        safe = false;
+        break;
+      }
       previous = oneLineNumbers[i];
     }
     if (safe == true) {
-      print(safe);
-      print(line);
       totalSafeSum += 1;
     }
   }

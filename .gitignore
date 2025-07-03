@@ -1,2 +1,4 @@
-venv/
+.dart_tool/
 __pycache__/
+venv/
+.pytest_cache/

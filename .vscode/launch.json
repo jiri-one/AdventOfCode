@@ -15,6 +15,14 @@
             "autoReload": {
                 "enable": true
               }
-        }
+        },
+        {
+      "name": "Dart: Current File",
+      "type": "dart",
+      "request": "launch",
+      "program": "${file}",
+      "args": ["test"],
+      "cwd": "${fileDirname}"
+    }
     ]
 }

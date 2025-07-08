@@ -1,7 +1,7 @@
 import '../../get_input_strings.dart' show getInputStrings;
 
 // test results should be 4
-// result is
+// result is 439
 
 // helper functions
 bool isIncreasing(int x, int y) {
